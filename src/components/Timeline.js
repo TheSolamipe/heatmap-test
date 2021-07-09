@@ -18,20 +18,17 @@ const Timeline = ({range, data})=>{
     let startDate = range[0];
     const DayFormat = 'YYYY-MM-DD';
     
-    let colorMultiplier = 2 / (max - min);
+    let colorMultiplier = 1.5 / (max - min);
 
     return (
         <div className="timeline">
-            <div className="timeline-months">
-                {months.map((_, index) => <Month key={index} index={index} startDate={startDate} />)}
-            </div>
             <div className="timeline-body">
                 <div className="timeline-weekdays">
                     {weekDays.map((_,index)=> <WeekDay key={index} index={index} startDate={startDate} />)}
                 </div>
                 <div className="timeline-cells">
                     {cells.map((_, index)=> {
-                        let date = moment(startDate).add(index, 'day');
+                        let date = moment(startDate).add(index - 1, 'day');
                         let dataPoint = data.find(d => moment(date).format(DayFormat) === moment(d.date).format(DayFormat));
                         let colorValue = colorMultiplier * dataPoint?.amount
 
@@ -46,6 +43,9 @@ const Timeline = ({range, data})=>{
                         );
                     })}
                 </div>
+            </div>
+            <div className="timeline-months">
+                {months.map((_, index) => <Month key={index} index={index} startDate={startDate} />)}
             </div>
         </div>
     )
